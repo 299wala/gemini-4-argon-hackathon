@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>299WALA - Male Female Kabadi Joda Model</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Noto Sans',system-ui}
+body{background:#0a0a0a;color:#fff;min-height:100vh}
+.header{padding:12px 16px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(10,10,10,0.9);backdrop-filter:blur(10px);z-index:20}
+.logo{font-weight:900;font-size:20px;letter-spacing:-1px}
+.logo span{color:#22c55e}
+.live{border:1px solid #22c55e;color:#22c55e;padding:5px 10px;border-radius:20px;font-size:11px}
+.main{display:grid;grid-template-columns:320px 1fr 340px;gap:12px;padding:12px;max-width:1400px;margin:auto}
+.card{background:#151515;border:1px solid #222;border-radius:14px;padding:14px}
+.card h3{font-size:12px;opacity:.6;letter-spacing:1px;margin-bottom:10px}
+input,select,button{width:100%;padding:10px;border-radius:8px;border:1px solid #333;background:#0f0f0f;color:#fff;margin-bottom:8px;font-size:13px}
+button{background:#22c55e;color:#000;font-weight:800;border:0;cursor:pointer}
+button:disabled{opacity:.4}
+.pill{display:inline-block;padding:4px 8px;border-radius:12px;font-size:11px;font-weight:700;margin:2px}
+.male{background:#3b82f6;color:white}
+.female{background:#ec4899;color:white}
+.item{border:1px dashed #333;border-radius:10px;padding:8px;margin-bottom:8px;display:flex;gap:8px;align-items:center}
+.item img{width:44px;height:44px;border-radius:6px;object-fit:cover;background:#222}
+.match{border:2px solid #22c55e;background:linear-gradient(135deg,#151515,#0f2211);border-radius:12px;padding:10px;margin-bottom:10px;animation:pop .4s}
+@keyframes pop{from{transform:scale(.9)}to{transform:scale(1)}}
+.joda{font-size:22px;text-align:center;margin:6px 0}
+@media(max-width:1000px){.main{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="logo">299WALA <span>.COM</span> <small style="font-size:10px;opacity:.6">| HAR GAON ME KABADI DUKAN</small></div>
+<div class="live">● AI JODA MODEL LIVE - Gemini 4 Argon</div>
+</div>
+
+<div class="main">
+<!-- LEFT: UPLOAD -->
+<div class="card">
+<h3>STEP 1: KACHRA UPLOAD (Male/Female)</h3>
+<input id="iname" placeholder="Samaan ka naam - ex: Nut, Bolt, Bottle">
+<select id="itype">
+<option value="">Male / Female chuno</option>
+<option value="female">FEMALE - Nut, Hole, Empty Bottle (jisme Male jodega)</option>
+<option value="male">MALE - Bolt, Dhakkan, Charger (jo jodega)</option>
+</select>
+<input id="village" placeholder="Gaon - ex: Lucknow, Agra, Patna">
+<input id="imgurl" placeholder="Photo URL (optional)">
+<button onclick="addItem()">299WALA PE UPLOAD KARO</button>
+<p style="font-size:10px;opacity:.5;margin-top:8px">Example: Nut = Female, Bolt = Male. AI khud joda banayega.</p>
+<div style="margin-top:12px"><h3>GAON KI DUKAN - STOCK</h3><div id="stock"></div></div>
+</div>
+
+<!-- CENTER: MAP + MATCHING -->
+<div class="card">
+<h3>STEP 2: WORLD MODEL - SARE GAON KA KACHRA (1M Context)</h3>
+<div id="map" style="background:#0f0f0f;border:1px solid #222;border-radius:10px;height:180px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+<div style="position:absolute;inset:0;background:radial-gradient(circle at 30% 40%, #22c55e22, transparent 60%), radial-gradient(circle at 80% 60%, #3b82f622, transparent 50%)"></div>
+<div id="dots"></div>
+<p style="z-index:1;font-size:12px;opacity:.7">🌍 Bharat ke sabhi gaon scan ho rahe hain...</p>
+</div>
+<div style="margin-top:12px"><h3>STEP 3: AI MALE-FEMALE MILAN (Advance Reasoning)</h3><div id="matches"></div></div>
+</div>
+
+<!-- RIGHT: RESALE -->
+<div class="card">
+<h3>STEP 4: 299WALA.COM PE RESALE - ₹299</h3>
+<div id="resale"></div>
+<div style="margin-top:14px;padding:10px;background:#0f2211;border:1px solid #22c55e33;border-radius:10px">
+<b style="font-size:11px;color:#22c55e">IMPACT</b><br>
+<span style="font-size:12px">♻️ Desh Swachh: <b id="total">0</b> kg kachra saaf<br>🤝 Madad: <b id="help">0</b> jaruratmand<br>💰 Munafa: ₹<b id="profit">0</b> (299wala commission)</span>
+</div>
+<div style="margin-top:12px">
+<b style="font-size:10px;opacity:.6">MANAGED AGENTS (Gemini 4 Argon)</b>
+<div style="font-size:11px;margin-top:6px;line-height:1.6">
+<span style="color:#22c55e">● Agent1 Village Scanner:</span> Visual Coding<br>
+<span style="color:#f59e0b">● Agent2 Gender Tagger:</span> Male/Female<br>
+<span style="color:#3b82f6">● Agent3 Matchmaker:</span> Joda + 299wala Upload
+</div>
+</div>
+</div>
+</div>
+
+<script>
+let items = JSON.parse(localStorage.getItem('299wala')||'[]');
+if(items.length==0){
+items=[
+{name:'Nut 10mm',type:'female',village:'Lucknow',img:'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=100'},
+{name:'Bolt 10mm',type:'male',village:'Agra',img:'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=100'},
+{name:'Empty Bottle',type:'female',village:'Patna',img:'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=100'},
+{name:'Bottle Dhakkan',type:'male',village:'Kanpur',img:'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=100'}
+];
+}
+
+function render(){
+document.getElementById('stock').innerHTML = items.map((it,i)=>`
+<div class="item"><img src="${it.img}"><div><b>${it.name}</b><br><span class="pill ${it.type}">${it.type.toUpperCase()}</span> <small style="opacity:.6">${it.village}</small></div></div>
+`).join('');
+let dotsHTML = items.map(it=>`<span style="position:absolute;left:${10+Math.random()*80}%;top:${20+Math.random()*60}%;background:${it.type=='male'?'#3b82f6':'#ec4899'};width:8px;height:8px;border-radius:50%;box-shadow:0 0 8px currentColor"></span>`).join('');
+document.getElementById('dots').innerHTML = dotsHTML;
+
+// MATCHING LOGIC
+let matches=[]; let used=new Set();
+for(let i=0;i<items.length;i++){
+ for(let j=0;j<items.length;j++){
+  if(i!=j && items[i].type=='female' && items[j].type=='male' && !used.has(i) && !used.has(j)){
+   if((items[i].name.toLowerCase().includes('nut') && items[j].name.toLowerCase().includes('bolt')) || (items[i].name.toLowerCase().includes('bottle') && items[j].name.toLowerCase().includes('dhakkan')) || Math.random()>0.7){
+    matches.push([items[i],items[j]]); used.add(i); used.add(j); break;
+   }
+  }
+ }
+}
+document.getElementById('matches').innerHTML = matches.length? matches.map(m=>`
+<div class="match"><div style="display:flex;justify-content:space-between;align-items:center"><span class="pill female">${m[0].name} (${m[0].village})</span><span>❤️</span><span class="pill male">${m[1].name} (${m[1].village})</span></div><div class="joda">🔩 = 🛠️ Useful Tool Ban Gaya!</div><small style="opacity:.6">AI Reasoning: Female + Male = Perfect Fit</small></div>
+`).join('') : '<p style="opacity:.5;font-size:12px">AI Male-Female joda dhoondh raha hai...</p>';
+
+document.getElementById('resale').innerHTML = matches.map((m,k)=>`
+<div class="match"><b>299wala.com/product/joda-${k}</b><br><small>${m[0].name} + ${m[1].name} = Naya Samaan</small><br><b style="color:#22c55e">₹299</b> <button style="width:auto;padding:4px 10px;font-size:11px;margin-left:8px" onclick="alert('Jaruratmand ne kharid liya!')">BUY - Madad Karo</button></div>
+`).join('');
+
+document.getElementById('total').textContent = items.length*2;
+document.getElementById('help').textContent = matches.length;
+document.getElementById('profit').textContent = matches.length*50;
+}
+function addItem(){
+let name=document.getElementById('iname').value, type=document.getElementById('itype').value, village=document.getElementById('village').value, img=document.getElementById('imgurl').value || `https://picsum.photos/seed/${Date.now()}/100`;
+if(!name||!type||!village) return alert('Naam + Male/Female + Gaon bharo');
+items.push({name,type,village,img}); localStorage.setItem('299wala',JSON.stringify(items));
+document.getElementById('iname').value=''; render();
+}
+render();
+</script>
+</body>
+</html>
