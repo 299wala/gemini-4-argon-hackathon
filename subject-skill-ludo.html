@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Subject Wise Skill Ludo</title>
+<style>
+body{font-family:Arial;text-align:center;background:#f0f0f0}
+.subjects button{padding:10px 15px;margin:5px;font-weight:bold}
+#board{width:300px;height:300px;background:white;margin:20px auto;border:2px solid black;display:grid;grid-template-columns:repeat(10,1fr);position:relative}
+.token{width:20px;height:20px;background:red;border-radius:50%;position:absolute;transition:0.5s}
+#quizBox{background:white;padding:15px;border:2px solid blue;width:300px;margin:auto;display:none}
+</style>
+</head>
+<body>
+<h2>Subject Wise Skill Ludo</h2>
+<div class="subjects">
+<button onclick="setSubject('Math')">Math</button>
+<button onclick="setSubject('Science')">Science</button>
+<button onclick="setSubject('Ghazipur GK')">Ghazipur GK</button>
+<button onclick="setSubject('English')">English</button>
+</div>
+<p>Selected: <b id="sub">Math</b> | Position: <span id="pos">0</span></p>
+<div id="board"><div id="player" class="token" style="left:0;top:0"></div></div>
+<button onclick="rollDice()" style="padding:15px 30px;background:green;color:white;font-size:18px">DICE ROLL (MCQ)</button>
+
+<div id="quizBox">
+<p id="qText"></p>
+<div id="options"></div>
+<button onclick="skipQ()">Skip (0 move)</button>
+</div>
+
+<script>
+let currentSubject='Math'; let position=0;
+let questions={
+Math:[
+{q:"2+2=?",opts:["3","4"],ans:1},
+{q:"10x5=?",opts:["40","50","60"],ans:1},
+{q:"12/3=?",opts:["2","4","3","6"],ans:1}
+],
+Science:[
+{q:"Water formula?",opts:["H2O","O2"],ans:0},
+{q:"Sun is a?",opts:["Planet","Star","Moon"],ans:1}
+],
+"Ghazipur GK":[
+{q:"Ghazipur famous for?",opts:["Ganga","Yamuna"],ans:0},
+{q:"Ghazipur district in?",opts:["UP","Bihar","MP","UK"],ans:0}
+],
+English:[
+{q:"He __ going",opts:["is","are"],ans:0}
+]
+};
+let currentQ=null;
+function setSubject(s){currentSubject=s;document.getElementById('sub').innerText=s;}
+function rollDice(){
+ let list=questions[currentSubject];
+ currentQ=list[Math.floor(Math.random()*list.length)];
+ document.getElementById('qText').innerText=currentQ.q;
+ let optDiv=document.getElementById('options'); optDiv.innerHTML='';
+ currentQ.opts.forEach((o,i)=>{
+   let b=document.createElement('button'); b.innerText=o; b.style.display='block'; b.style.width='100%'; b.style.margin='5px';
+   b.onclick=()=>checkAns(i); optDiv.appendChild(b);
+ });
+ document.getElementById('quizBox').style.display='block';
+}
+function checkAns(selected){
+ let move=0; let count=currentQ.opts.length;
+ if(selected===currentQ.ans){
+   if(count===2) move=1;
+   if(count===3) move=2;
+   if(count===4) move=3;
+ } else { move=-1; }
+ applyMove(move);
+}
+function skipQ(){ applyMove(0); }
+function applyMove(move){
+ position+=move; if(position<0) position=0;
+ document.getElementById('pos').innerText=position;
+ document.getElementById('player').style.left=(position%10)*30+'px';
+ document.getElementById('player').style.top=Math.floor(position/10)*30+'px';
+ document.getElementById('quizBox').style.display='none';
+ alert(move>0?`Sahi! +${move} aage`: move<0?`Galat! ${move} peeche`: `Skip! Wahi rahe`);
+ if(position>=20) alert('Jeet gaye! Subject Master!');
+}
+</script>
+</body>
+</html>
