@@ -1,15 +1,7 @@
-# Subject Wise Skill Ludo - Powered by Gemini 4 Argon
+# My Projects Portfolio
 
-India's first subject-choice Ludo. Choose your subject, play your strength.
-
-Core Skill Mechanic:
-- Roll -> MCQ (2/3/4 options)
-- 2 Options: Correct +1, Wrong -1, Skip 0
-- 3 Options: Correct +2
-- 4 Options: Correct +3
-
-Why it's not gambling: No luck, only knowledge + speed.
-
-Tracks: Visual Coding + Managed Agents
-Monetization: 20% platform commission on skill battles.
-Subjects MVP: Math, Science, Ghazipur GK, English
+1. Duck-Fish-CrocodileGame - Old Game Project
+2. index.html - Scrap Cleaning & Making Useful Project
+3. subject-skill-ludo.html - NEW: Subject Wise Skill Ludo for Gemini 4 Argon Hackathon
+   -> Logic: Dice = MCQ, 2 option=+1/-1, 3 option=+2, 4 option=+3
+   -> Built with Gemini 4 Argon
